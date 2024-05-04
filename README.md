@@ -123,4 +123,88 @@ Y para hacer que nuestra web sea la inicial comentamos estas lineas:
 
 ```
 
+![Estructura basica web](images/estructura_basica.PNG)
+
+## Para darle formato a la web
+
+### Descargar e instalar node.js (tambien se instalará npm)
+```
+https://nodejs.org/en
+```
+
+### Descargar e instalar breeze
+Tambien se instala tailwindcss para dar formato. Hay que tener en cuenta que hay que estar en el directorio del proyecto.
+
+NOTA: Al instalar sobreescribe el fichero web.php, por lo que debemos hacer una copia si queremos conservar lo que tiene configurado para agrgarlo posteriormente.
+
+```
+composer require laravel/breeze
+```
+
+Si se ha instalado bien debe crearse la carpeta en vendor/laravel/breeze
+Lo tenemos instalado pero no disponible, para eso necesitamos ejecutar:
+```
+php artisan breeze
+```
+Selecionaremos:
+* Blade
+* No modo dark
+* PHPinit.
+
+  Con eso ha instalado los controladores, las vistas y las rutas por defecto para login, register, etc...
+  Las vistas/webs se pueden modificar a nuestra conveniencia todo a excepto de las variables.
+
+### Tailwindcss y @vite
+
+Podemos aplicar distintos estilos que tiene añadidos taildwindcss, pero tambien podemos crear los nuestro propios, eso se hace en el fichero taildwind.config.js
+
+```
+height:{
+  "10v":"10vh",
+  "15v":"15vh",
+  "65v":"65vh"
+},
+colors:{
+  'header': "#BE0F34",
+  'nav': "#FFFFFF",
+  'main':"#DCE5F4",
+  'footer':"#E5E5E5"
+},
+```
+Ademas debemos referencias el fichero en nuestro html con:
+
+```
+@vite("resources/css/app.css")
+```
+### Aplicar los estilos a nuestro index.blade.php
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Title</title>
+    @vite("resources/css/app.css")
+</head>
+<body>
+<header><h1 class="h-15v bg-header">Esta es mi página principal</h1></header>
+<hr />
+<nav CLASS="h-10 bg-nav">
+    Menu
+</nav>
+
+<main class="h-65v bg-main">
+    Parte Principal
+</main>
+
+<footer class="h-10v bg-footer">
+    Footer
+</footer>
+</body>
+</html>
+```
+![Vista web estilos](images/estilos.PNG)
+
 
