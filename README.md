@@ -328,5 +328,7 @@ Volvemos a buscar a Daisyui y escogemos el que mas nos giuste, lo agregamos a fo
     </nav>
 </footer>
 ```
-
 ![WEb Daisyui](public/images/daisyui.PNG)
+
+Personalización de la web
+![WEb Personalizada](public/images/personalizada.PNG)
