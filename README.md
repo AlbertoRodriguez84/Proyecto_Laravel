@@ -52,7 +52,7 @@ php artisan serve
 http://127.0.0.1:8000/
 ```
 
-![Web inicial funcionando](images/web_inicial.PNG)
+![Web inicial funcionando](public/images/web_inicial.PNG)
 
 ## Crear nuestra web
 
@@ -123,7 +123,7 @@ Y para hacer que nuestra web sea la inicial comentamos estas lineas:
 
 ```
 
-![Estructura basica web](images/estructura_basica.PNG)
+![Estructura basica web](public/images/estructura_basica.PNG)
 
 ## Para darle formato a la web
 
@@ -205,6 +205,49 @@ Ademas debemos referencias el fichero en nuestro html con:
 </body>
 </html>
 ```
-![Vista web estilos](images/estilos.PNG)
+![Vista web estilos](public/images/estilos.PNG)
 
+## Layouts
 
+El siguiente paso es crear los layouts para nuestra web, ya que queremos que todos las distintas partes tengan la misma parariencia, este mejor estructurado el codigo y sea más facil de mantener.
+
+Mover index.blade.php a una carpeta creada dentro de views/components/layouts y renombrarlo a layout.blade.php
+
+Crear en views/index.blade.php
+```
+<x-layouts.layout>
+    <h1>Esta es la parte main</h1>
+</x-layouts.layout>
+```
+
+Y en layout.blade.php cambiar en main por la variable, para refenciarlo.
+``` 
+<main class="h-65v bg-main">
+    {{$slot}}
+</main>
+```
+
+Cortar el contenido de header de layout.blade.php  y sustituirlo por esto:
+```
+<x-layouts.header/>
+```
+Crear layout para layouts/header.blade.php con lo que hemos cortado anteriormente.
+```
+<header> 
+  Proyecto Laravel
+</header>
+Hacemos lo mismo con nav, quitamos el contenido de nav de layout.blade.php  y lo sustituimos por esto:
+```
+<x-layouts.nav/>
+```
+Crear layout para layouts/nav.blade.php y agregar los botones que necesitamos para el menu:
+
+```
+<nav>
+  Menu
+</nav>
+
+Ya solo queda el footer, creamos el archivo footer.blade.php y en layout.blade.php sustituimos el footer por esto:
+```
+<x-layouts.footer/>
+```
