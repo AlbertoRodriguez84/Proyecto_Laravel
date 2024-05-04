@@ -52,7 +52,7 @@ php artisan serve
 http://127.0.0.1:8000/
 ```
 
-![Web inicial funcionando](images/web_inicial.PNG)
+![Web inicial funcionando](public/images/web_inicial.PNG)
 
 ## Crear nuestra web
 
@@ -123,4 +123,131 @@ Y para hacer que nuestra web sea la inicial comentamos estas lineas:
 
 ```
 
+![Estructura basica web](public/images/estructura_basica.PNG)
 
+## Para darle formato a la web
+
+### Descargar e instalar node.js (tambien se instalará npm)
+```
+https://nodejs.org/en
+```
+
+### Descargar e instalar breeze
+Tambien se instala tailwindcss para dar formato. Hay que tener en cuenta que hay que estar en el directorio del proyecto.
+
+NOTA: Al instalar sobreescribe el fichero web.php, por lo que debemos hacer una copia si queremos conservar lo que tiene configurado para agrgarlo posteriormente.
+
+```
+composer require laravel/breeze
+```
+
+Si se ha instalado bien debe crearse la carpeta en vendor/laravel/breeze
+Lo tenemos instalado pero no disponible, para eso necesitamos ejecutar:
+```
+php artisan breeze
+```
+Selecionaremos:
+* Blade
+* No modo dark
+* PHPinit.
+
+  Con eso ha instalado los controladores, las vistas y las rutas por defecto para login, register, etc...
+  Las vistas/webs se pueden modificar a nuestra conveniencia todo a excepto de las variables.
+
+### Tailwindcss y @vite
+
+Podemos aplicar distintos estilos que tiene añadidos taildwindcss, pero tambien podemos crear los nuestro propios, eso se hace en el fichero taildwind.config.js
+
+```
+height:{
+  "10v":"10vh",
+  "15v":"15vh",
+  "65v":"65vh"
+},
+colors:{
+  'header': "#BE0F34",
+  'nav': "#FFFFFF",
+  'main':"#DCE5F4",
+  'footer':"#E5E5E5"
+},
+```
+Ademas debemos referencias el fichero en nuestro html con:
+
+```
+@vite("resources/css/app.css")
+```
+### Aplicar los estilos a nuestro index.blade.php
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Title</title>
+    @vite("resources/css/app.css")
+</head>
+<body>
+<header><h1 class="h-15v bg-header">Esta es mi página principal</h1></header>
+<hr />
+<nav CLASS="h-10 bg-nav">
+    Menu
+</nav>
+
+<main class="h-65v bg-main">
+    Parte Principal
+</main>
+
+<footer class="h-10v bg-footer">
+    Footer
+</footer>
+</body>
+</html>
+```
+![Vista web estilos](public/images/estilos.PNG)
+
+## Layouts
+
+El siguiente paso es crear los layouts para nuestra web, ya que queremos que todos las distintas partes tengan la misma parariencia, este mejor estructurado el codigo y sea más facil de mantener.
+
+Mover index.blade.php a una carpeta creada dentro de views/components/layouts y renombrarlo a layout.blade.php
+
+Crear en views/index.blade.php
+```
+<x-layouts.layout>
+    <h1>Esta es la parte main</h1>
+</x-layouts.layout>
+```
+
+Y en layout.blade.php cambiar en main por la variable, para refenciarlo.
+``` 
+<main class="h-65v bg-main">
+    {{$slot}}
+</main>
+```
+
+Cortar el contenido de header de layout.blade.php  y sustituirlo por esto:
+```
+<x-layouts.header/>
+```
+Crear layout para layouts/header.blade.php con lo que hemos cortado anteriormente.
+```
+<header> 
+  Proyecto Laravel
+</header>
+Hacemos lo mismo con nav, quitamos el contenido de nav de layout.blade.php  y lo sustituimos por esto:
+```
+<x-layouts.nav/>
+```
+Crear layout para layouts/nav.blade.php y agregar los botones que necesitamos para el menu:
+
+```
+<nav>
+  Menu
+</nav>
+
+Ya solo queda el footer, creamos el archivo footer.blade.php y en layout.blade.php sustituimos el footer por esto:
+```
+<x-layouts.footer/>
+```
