@@ -499,6 +499,8 @@ Nota: si queremos modificar algún campo de las tablas, tenemos que ejecutar el 
 php  artisan migrate:fresh 
 ```
 
+## Registro de usuarios
+
 Ahora ya tenemos todo listo para poder registrar usuarios. 
 
 Lo único que debemos cambiar en app/Http/controllers/Auth/
@@ -518,5 +520,35 @@ RegisteredUserController.php:
 
 Esto es para que una vez registrados o logueados nos lleve a la pagina de incio.
 
+En el header tambien  se realizan cambiando para muestre los botones Entrar y Registrar sin estar logueado (en modo invitado):
 
+```
+@guest 
+<a href="/login" class="btn btn-primary">Acceso</a>
+<a href="/register" class="btn btn-secondary">Registro</a>
+@endguest
+```
+![User no logueado](public/images/no_logueado.PNG)
 
+Y el nombre del usuario y el boton Salit una vez que nos hemos logueado.
+```
+@auth 
+  <h1 class="text-2xl text-white mr-4">{{ auth()->user()->name }}</h1>
+  <form action="{{ route("logout") }}" method="POST">
+   <input class="btn btn-glass" type="submit" value="Salir">
+  </form>
+@endauth
+```
+
+![User logueado](public/images/nologueado.PNG)
+
+Además hay que corregir un error, porque cuando le damos s Salir no nos lleva a nuestra pagina inicial, esto es por seguridad al venir desde un formulario y evitar posibles ataques. Para solucionarlo debemos poner un token en el header dentro del formulario logout.
+```
+@auth 
+  <h1 class="text-2xl text-white mr-4">{{ auth()->user()->name }}</h1>
+  <form action="{{ route("logout") }}" method="POST">
+    @csrf 
+   <input class="btn btn-glass" type="submit" value="Salir">
+  </form>
+@endauth
+```
