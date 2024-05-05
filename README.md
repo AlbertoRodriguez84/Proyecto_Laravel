@@ -659,7 +659,7 @@ Tambien modificar el nav para que el botón alumnos nos muestre el listado y he 
     @endauth
 ```
 
-El siguiente paso es generar la vista donde podremos visualizar nuestros alumnos, vamos a resource/views/alumnos/alumno.php
+El siguiente paso es generar la vista donde podremos visualizar nuestros alumnos, vamos a resource/views/alumnos/index.blade.php
 
 ```
 <x-layouts.layout>
