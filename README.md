@@ -466,3 +466,57 @@ SHOW DATABASES;
 ![BD_consola](public/images/bd_consola1.PNG)
 
 ![BD_consola_logueada](public/images/bd_consola2.PNG)
+
+### Migración
+
+Ahora tenemos que generar la migración, debemos ejecutar:
+
+```
+php artisan make:migration alumnos --create=alumnos
+```
+Una vez ejecutado se nos crea en database/migrations/ una migracion alumnos
+
+Solo esta id , pero creamos todos los campos que necesitemos en nuestra tabla:
+
+```
+
+Schema::create('alumnos', function (Blueprint $table) {
+    $table->id();
+    $table->string('nombre');
+    $table->integer('edad');
+    $table->string('email');
+    $table->timestamps();
+});
+```
+Despues ejecutamos el siguiente comando para ejecutar las migraciones.
+```
+php artisan migrate
+```
+
+Nota: si queremos modificar algún campo de las tablas, tenemos que ejecutar el siguiente comando, que borra todos los campos y los vuelve a crear
+
+```
+php  artisan migrate:fresh 
+```
+
+Ahora ya tenemos todo listo para poder registrar usuarios. 
+
+Lo único que debemos cambiar en app/Http/controllers/Auth/
+
+AuthenticatedSessionController.php:
+
+Para cuando hagagamos:
+```
+return redirect()->intended(route('main', absolute: false));
+```
+
+RegisteredUserController.php:
+
+```
+ return redirect(route('main', absolute: false));
+ ```
+
+Esto es para que una vez registrados o logueados nos lleve a la pagina de incio.
+
+
+
