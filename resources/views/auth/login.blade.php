@@ -2,7 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')"/>
     <div class="flex flex-row justify-center p-5 bg-gray-200 ">
-        <form method="POST" action="{{ route('login') }}" class="bg-white p-7 rounded-3xl>
+        <form method="POST" action="{{ route('login') }}" class="bg-white p-7 rounded-3xl">
             @csrf
 
             <!-- Email Address -->
@@ -50,4 +50,3 @@
         </form>
     </div>
 </x-layouts.layout>
-
