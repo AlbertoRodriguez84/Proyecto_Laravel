@@ -368,4 +368,5 @@ En el formulario:
 ```
 <form method="POST" action="{{ route('register') }}" class="bg-white p-7 rounded-3xl">
 ```
+
 ![WEb entrar](public/images/entrar.PNG)
