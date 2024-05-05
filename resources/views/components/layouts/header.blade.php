@@ -2,7 +2,7 @@
     <img class="max-h-full" src="{{ asset('images/Logo.png') }}" alt="Logo">
     <h1 class="text-5xl text-white" >Proyecto Laravel</h1>
     <div>
-        <a class=" btn btn-warning">Entrar</a>
-        <a class=" btn btn-warning">Registro</a>
+        <a href="/login" class="btn btn-outline-warning">Entrar</a>
+        <a href="/register" class="btn btn-outline-warning">Registro</a>
     </div>
 </header>
