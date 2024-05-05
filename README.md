@@ -688,3 +688,4 @@ El siguiente paso es generar la vista donde podremos visualizar nuestros alumnos
     </div>
 </x-layouts.layout>
 ```
+![Tabla alumnos](public/images/tabla_alumnos.PNG)
