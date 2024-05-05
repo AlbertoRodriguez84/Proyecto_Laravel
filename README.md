@@ -528,7 +528,7 @@ En el header tambien  se realizan cambiando para muestre los botones Entrar y Re
 <a href="/register" class="btn btn-secondary">Registro</a>
 @endguest
 ```
-![User no logueado](public/images/no_logueado.PNG)
+![User no logueado](public/images/nologueado.PNG)
 
 Y el nombre del usuario y el boton Salit una vez que nos hemos logueado.
 ```
@@ -540,7 +540,7 @@ Y el nombre del usuario y el boton Salit una vez que nos hemos logueado.
 @endauth
 ```
 
-![User logueado](public/images/nologueado.PNG)
+![User logueado](public/images/logueado.PNG)
 
 Además hay que corregir un error, porque cuando le damos s Salir no nos lleva a nuestra pagina inicial, esto es por seguridad al venir desde un formulario y evitar posibles ataques. Para solucionarlo debemos poner un token en el header dentro del formulario logout.
 ```
