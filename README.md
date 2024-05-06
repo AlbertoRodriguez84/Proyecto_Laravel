@@ -530,7 +530,7 @@ En el header tambien  se realizan cambiando para muestre los botones Entrar y Re
 ```
 ![User no logueado](public/images/nologueado.PNG)
 
-Y el nombre del usuario y el boton Salit una vez que nos hemos logueado.
+Y el nombre del usuario y el boton Salir una vez que nos hemos logueado.
 ```
 @auth 
   <h1 class="text-2xl text-white mr-4">{{ auth()->user()->name }}</h1>
@@ -558,7 +558,7 @@ Además hay que corregir un error, porque cuando le damos s Salir no nos lleva a
 Ahora hay que generar un nuevo modelo de datos para poder trabajar con alumnos, para ello utilizamos el siguiente comando que nos crea todo lo necesario para hacerlo (modelo, controlador, factoria,...):
 
 ```
-php artisan make:model Alumno 
+php artisan make:model Alumno --all
 ```
 
 Despues hay que agregar la ruta :
@@ -593,7 +593,7 @@ private function get_dni(): string
 }
 ```
 
-Una vez que tenemos la fabrica (para crearnos los datos), en el seeder debemos invocar un numero de veces a factory para crear 50 registro.
+Una vez que tenemos la fabrica (para crearnos los datos), en el seeder debemos invocar un numero de veces a factory para crear 50 registros.
 
 ```
 <?php
@@ -620,7 +620,7 @@ class AlumnoSeeder extends Seeder
 Y por ultimo en databaseseeeder tenemos que llamar a la factoria que hemos creado:
 
 ```
-$this->call([ ::class]);
+$this->call([ AlumnoSeeder::class]);
 ```
 
 Ya solo queda indicar en el .env que nos cree los nombres en castellano, cambiando el idioma en la siguiente línea:
@@ -638,11 +638,15 @@ php artisan migrate:fresh --seed
 
 
 
-Ahora para poder mostar los alumnos necesitamos crear en el controlador la función que nos pase el arrtay con todos los alumnos:
+Ahora para poder mostar los alumnos necesitamos crear en el controlador la función que nos pase el array con todos los alumnos:
 
 ```
-$alumnos = Alumno::all();
-return view('alumnos.index',compact('alumnos'));
+  public function index()
+    {
+        $alumnos = Alumno::all();
+        return view('alumnos.index',compact('alumnos'));
+        //
+    }
 ```
 
 Debemos crear las ruta en el fichero web.php
@@ -689,3 +693,102 @@ El siguiente paso es generar la vista donde podremos visualizar nuestros alumnos
 </x-layouts.layout>
 ```
 ![Tabla alumnos](public/images/tabla_alumnos.PNG)
+
+## Agregar, editar y borrar nuevos alumnos
+
+Primero debemos empezar por modificar nuestra apariencia, empezamos por la tabla para agregar el boton nuevo alumno.
+
+```
+<x-layouts.layout>
+    <h1 class="text-4xl text-red-700 text-center font-bold bg-gray-300">Listado de alumnos</h1>
+    <div class="overflow-x-auto h-full">
+        <table class="table table-xs table-pin-rows table-pin-cols">
+            <thead>
+```
+
+Agregar un ancla alumno, para luego referenciar donde tiene que ir mediante href, debajo de listado de alumnos.
+
+```
+<a class="btn btn-primary mx-10">Nuevo alumno</a>
+```
+
+Despues agregamos a nuestra tabla dos columnas para los campos de editar y borrar.
+```
+<th>DNI</th>
+<th>Nombre</th>
+<th>Edad</th>
+<th>Email</th>
+<th>Editar</th>
+<th>Borrar</th>
+```
+
+Dentro del bucle foreach, para que aparezcan al lado de cada alumno, creamos los dos nuevos campos. Para darle formato a los campos, en vez de poner el nombre vamos a https://heroicons.com/, buscamos el icono que queremos poner y copiamos y pegamos el código svg. Podemos personalizar el color, tamaño,…:
+
+```
+<td>
+    <button>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+        </svg>
+
+    </button>
+</td>
+<td>
+    <button>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+        </svg>
+
+    </button>
+</td>
+```
+
+Ahora toca dotar de funcionalidad los nuevo botones.En el botón Nuevo alumno, agregamos la ruta del método que queremos ejecutar, en nuestro caso create.
+
+```
+<a href={{route("alumnos.create")}} class="btn btn-primary mx-10">Nuevo alumno</a>
+```
+Despues en el controlador AlumnoController.php agregaremos al método create la vista del formulario para crear los alumnos.
+
+```
+public function create()
+{
+    return view ("alumnos.create");
+    //
+}
+```
+
+Ahora vamos a crear la vista del formulario en la carpeta alumno dentro de resources/views/alumno/create.blade.php, llamando al metodo alumnos.store para guardar los datos en la base de datos.
+```
+<x-layouts.layout>
+    <h1 class="text-4xl text-red-600 font-bold flex flex-row justify-center">Alta nuevos alumnos</h1>
+    <div class="flex flex-row justify-center p-5 bg-gray-200 ">
+
+        <form method="POST" action="{{ route('alumnos.store') }}" method="POST" class="bg-white p-7 rounded-3xl">
+            @csrf
+            <x-input-label for="nombre">
+                Nombre
+            </x-input-label>
+            <x-text-input name="nombre" />
+            <x-input-label for="DNI">
+                DNI
+            </x-input-label>
+            <x-text-input name="DNI" />
+            <x-input-label for="email">
+                Email
+            </x-input-label>
+            <x-text-input name="email" />
+            <x-input-label for="edad">
+                Edad
+            </x-input-label>
+            <x-text-input name="edad" />
+            <br/>
+            <button class="btn btn-primary mx-2 mt-10 p-100 " type="submit" value="Guardar">Guardar</button>
+            <button class="btn btn-primary mx-2  mt-10 p-100" type="submit" value="Cancelar">Cancelar</button>
+
+
+        </form>
+    </div>
+</x-layouts.layout>
+```
+![Formulario nuevo alumno](public/images/formulario_nuevo_alumno.PNG)
