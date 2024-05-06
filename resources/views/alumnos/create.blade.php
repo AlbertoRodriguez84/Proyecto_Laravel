@@ -22,7 +22,7 @@
             <x-text-input name="edad" />
             <br/>
             <button class="btn btn-primary mx-2 mt-10 p-100 " type="submit" value="Guardar">Guardar</button>
-            <button class="btn btn-primary mx-2  mt-10 p-100" type="submit" value="Cancelar">Cancelar</button>
+            <a href="{{ route('alumnos.index') }}" class="btn btn-primary mx-2 mt-10">Cancelar</a>
 
 
         </form>

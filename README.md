@@ -792,3 +792,68 @@ Ahora vamos a crear la vista del formulario en la carpeta alumno dentro de resou
 </x-layouts.layout>
 ```
 ![Formulario nuevo alumno](public/images/formulario_nuevo_alumno.PNG)
+
+Para poder guardar los datos, por seguridad Laravel bloquea el acceso al guardado y para que nos permita hacerlo debemos cambiar en Requests/StoreAlumno.php la función authorize a true.
+```
+public function authorize(): bool
+{
+    return true;
+}
+```
+
+Añadir al modelo alumno.php los campos que le van a llegar cuando se cree el alumno, tenemos que especificar que campos le van a llegar.
+```
+class Alumno extends Model
+{
+    use HasFactory;
+
+    protected $fillable = ['nombre', 'DNI', 'edad', 'email'];
+
+}
+```
+
+Ahora  en AlumnoController.php y completar la función store que actualmente está vacía para que coja los datos, y cree un nuevo alumno, devolviéndonos al listado general una vez agregado.
+
+```
+public function store(StoreAlumnoRequest $request)
+{
+    $datos=$request->input();
+    $alumno= new Alumno($datos);
+    $alumno->save();
+    return redirect()->route('alumnos.index');
+    //
+}
+```
+
+NOTA: Hemos indicado que coja todo el array, pero laravel internamente lo gestiona de manera que solo va a aguardar los campos que hemos permitido en el paso anterior en alumno.php
+
+Aunque ya lo guarda, debemos crear unas reglas minimas de validación para evitar luego errores. Esto se hace en request/StoreAlumnoRequest.php en la función rules. En la validación hacemos que los 3 campos sean obligatorios con required, indicamos que tipo de datos deben contener (string, integer), el email no puede estar duplicado (unique) y la edad debe estar entre 10 y 100 (between).
+
+```
+public function rules(): array
+{
+    return [
+        "nombre"=>"string|required|min:5|max:50",
+        "email"=>"string|required|unique:alumnos",
+        "edad" => "integer|between:10,100",
+        "DNI" => 'required|string',
+        //
+    ];
+}
+```
+
+Ahora para poder comprobar mas facilmente que insertar registros funciona, se borran todos los registros y se crearan solo 10 cambiando database/seeders/AlumnoSeeder.php
+
+```
+Alumno::factory(5)->create();
+```
+
+Y ejecutamos para que cree los nuevos registros.
+
+```
+php artisan migrate:fresh --seed
+```
+
+![Formulario nuevo alumno rellenado](public/images/registro_1.PNG)
+
+![Alta  nuevo alumno efectiva](public/images/registro_2.PNG)
