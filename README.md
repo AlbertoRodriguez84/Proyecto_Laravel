@@ -842,7 +842,7 @@ public function rules(): array
 }
 ```
 
-Ahora para poder comprobar mas facilmente que insertar registros funciona, se borran todos los registros y se crearan solo 10 cambiando database/seeders/AlumnoSeeder.php
+Ahora para poder comprobar mas facilmente que insertar registros funciona, se borran todos los registros y se crearan solo 5 cambiando database/seeders/AlumnoSeeder.php
 
 ```
 Alumno::factory(5)->create();
@@ -857,3 +857,52 @@ php artisan migrate:fresh --seed
 ![Formulario nuevo alumno rellenado](public/images/registro_1.PNG)
 
 ![Alta  nuevo alumno efectiva](public/images/registro_2.PNG)
+
+Para mostrar un mensaje si no se cumple con la validación del campo, debemos poner debajo de cada cuadro de texto la condición para que nos la muestre
+
+```
+@if($errors->get("nombre"))
+    @foreach($errors->get("nombre") as $error)
+        <div class="text-sm text-red-600">
+            $error
+
+        </div>
+    @endforeach
+@endif
+```
+
+Para que los mensajes de error salgan en castellano, hay que instalar el paquete de idiomas desde el terminal.
+
+```
+composer require laravel-lang/Lang
+```
+
+Nos aparecerá la carpeta laravel-lang/Lang, que ahora debemos publicarla para poder utilizarla.
+
+```
+php artisan lang:publish
+```
+
+Ahora nos aparece la carpeta en nuestro proyecto lang, pero solo esta ingles, para poder tener castellano debemos agregarlo desde el terminal.
+
+```
+php artisan lang:add es
+```
+
+Y ya solo queda ir al fichero de configuración .env y cambiar el idioma.
+
+```
+APP_LOCALE=es
+```
+
+Además agregamos value=”{{(old(‘nombre’)}}” para que en caso de error nos mantenga los últimos campos escritos en el formulario y no debamos volver a completarlo.
+
+```
+<x-text-input name="nombre" value="{{ old('nombre') }}" />
+```
+
+Y para que el botón cancelar nos devuelva al listado lo referenciamos.
+
+```
+<a href="{{ route('alumnos.index') }}" class="btn btn-primary mx-2 mt-10">Cancelar</a>
+```
