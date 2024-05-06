@@ -1,5 +1,15 @@
 <x-layouts.layout>
-    <h1 class="text-2xl text-red-700 text-center font-bold bg-gray-300">Listado de alumnos</h1>
+    <h1 class="text-4xl text-red-700 text-center font-bold bg-gray-300">Listado de alumnos</h1>
+    @if (session()->has("status"))
+        <div role="alert" class="alert alert-success">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>{{ session()->get("status") }}</span>
+        </div>
+    @endif
     <div class="overflow-x-auto h-full">
         <a href="{{ route("alumnos.create") }}" class="btn btn-primary mx-10">Nuevo alumno</a>
         <table class="table table-xs table-pin-rows table-pin-cols">
@@ -21,14 +31,13 @@
                     <td>{{$alumno->edad}}</td>
                     <td>{{$alumno->email}}</td>
                     <td>
-                        <button>
+                        <a href="{{route("alumnos.edit", $alumno->id)}}">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                  stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                       d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
                             </svg>
-
-                        </button>
+                        </a>
                     </td>
                     <td>
                         <button>

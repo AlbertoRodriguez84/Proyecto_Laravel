@@ -906,3 +906,121 @@ Y para que el botón cancelar nos devuelva al listado lo referenciamos.
 ```
 <a href="{{ route('alumnos.index') }}" class="btn btn-primary mx-2 mt-10">Cancelar</a>
 ```
+
+Para que nos muestre un mensaje como que se ha guardado el alumno, en -AlumnoController.php  creamos una variable de sesión.
+
+```
+session->flash("status","Se ha creado el alumno $alumno->nombre");
+```
+Y ahora la referenciamos desde index.blade.php de alumnos debajo del titulo. Para darle formato a la ventana de alert buscamos en daisyui un diseño que nos encaje.
+
+```
+    @if (session()->has("status"))
+        <div role="alert" class="alert alert-success">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>{{ session()->get("status") }}</span>
+        </div>
+    @endif
+```
+
+Como ya podemos crear alumnos, ahora vamos a configurar la edición de uno creado. Primero tenemos que referenciar alumno.edit dentro del botón editar que había personalizado desde daisyui.
+
+```
+<a href="{{route("alumnos.edit", $alumno->id)}}">
+```
+
+Despues creamos dentro de alumno, la vista de edición : edit.blade.php
+Copiamos el formulario de lata de nuevos alumnos y modificamos el route del formulario.
+
+```
+<form method="POST" action="{{ route('alumnos.update', $alumno->id) }}" class="bg-white p-7 rounded-3xl">
+```
+
+Agregamos el método por el cual vamos a actualizar PUT (envia todos los datos) o PATCH (solo los seleccionados.
+
+```
+@method('PUT')
+```
+
+Y decimos a  los campos del formulario que nos muestre el valor actual de la variable $alumno.
+
+```
+<x-text-input name="nombre" value="{{ $alumno->nombre }}" />
+```
+
+Aplicamos la lógica al controlador.
+
+```
+public function update(UpdateAlumnoRequest $request, Alumno $alumno)
+{
+    $datos= $request -> input();
+    $alumno-> update($datos);
+    session()->flash ("status", "Se ha actualizado el alumno $alumno -> id");
+    return redirect() -> route('alumnos.index');
+    //
+}
+```
+
+Ahora debemos permitir el update en request porque si no nos va a decir operación no autorizada
+
+```
+public function authorize(): bool
+{
+    return true;
+}
+```
+
+Y copiamos las validaciones del Store para que tengan que cumplir los mismos requeridos, quitando unique de email, porque sino no nos dejará actualizar.
+
+```
+return [
+    "nombre"=>"string|required|min:5|max:50",
+    "email"=>"string|required",
+    "edad" => "integer|required|between:10,100",
+    "DNI" => 'required|string',
+    //
+];
+```
+
+### -ventana emergente para confirmar guardado
+
+Vamos a instalar sweet alert
+
+```
+npm install sweetalert2
+```
+
+Ahora en edit.blade.php modificamos el botón guardar con el evento onclick de javascript
+
+```
+<button class="btn btn-primary mt-10" type="button" onclick="confirmacionGuardado()>Guardar</button>
+```
+
+Y por ultimo debajo del layout ponemos el código del botón que hemos cogido de sweetalert2
+
+```
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    function confirmacionGuardado() {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¡Estás a punto de guardar los cambios!',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '¡Sí, guardar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('editForm').submit();
+            }
+        });
+    }
+</script>
+```
+
