@@ -32,7 +32,11 @@ class AlumnoController extends Controller
      */
     public function store(StoreAlumnoRequest $request)
     {
-        //
+        $datos = $request->validated();
+        $alumno = new Alumno($datos);
+        $alumno->save();
+        session()->flash("status", "Se ha creado el alumno $alumno->nombre");
+        return redirect()->route('alumnos.index');
     }
 
     /**
@@ -48,14 +52,20 @@ class AlumnoController extends Controller
      */
     public function edit(Alumno $alumno)
     {
+        return view ("alumnos.edit", compact("alumno"));
         //
     }
+
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateAlumnoRequest $request, Alumno $alumno)
     {
+        $datos= $request -> input();
+        $alumno-> update($datos);
+        session()->flash ("status", "Se ha actualizado el alumno $alumno->id");
+        return redirect() -> route('alumnos.index');
         //
     }
 

@@ -792,3 +792,235 @@ Ahora vamos a crear la vista del formulario en la carpeta alumno dentro de resou
 </x-layouts.layout>
 ```
 ![Formulario nuevo alumno](public/images/formulario_nuevo_alumno.PNG)
+
+Para poder guardar los datos, por seguridad Laravel bloquea el acceso al guardado y para que nos permita hacerlo debemos cambiar en Requests/StoreAlumno.php la función authorize a true.
+```
+public function authorize(): bool
+{
+    return true;
+}
+```
+
+Añadir al modelo alumno.php los campos que le van a llegar cuando se cree el alumno, tenemos que especificar que campos le van a llegar.
+```
+class Alumno extends Model
+{
+    use HasFactory;
+
+    protected $fillable = ['nombre', 'DNI', 'edad', 'email'];
+
+}
+```
+
+Ahora  en AlumnoController.php y completar la función store que actualmente está vacía para que coja los datos, y cree un nuevo alumno, devolviéndonos al listado general una vez agregado.
+
+```
+public function store(StoreAlumnoRequest $request)
+{
+    $datos=$request->input();
+    $alumno= new Alumno($datos);
+    $alumno->save();
+    return redirect()->route('alumnos.index');
+    //
+}
+```
+
+NOTA: Hemos indicado que coja todo el array, pero laravel internamente lo gestiona de manera que solo va a aguardar los campos que hemos permitido en el paso anterior en alumno.php
+
+Aunque ya lo guarda, debemos crear unas reglas minimas de validación para evitar luego errores. Esto se hace en request/StoreAlumnoRequest.php en la función rules. En la validación hacemos que los 3 campos sean obligatorios con required, indicamos que tipo de datos deben contener (string, integer), el email no puede estar duplicado (unique) y la edad debe estar entre 10 y 100 (between).
+
+```
+public function rules(): array
+{
+    return [
+        "nombre"=>"string|required|min:5|max:50",
+        "email"=>"string|required|unique:alumnos",
+        "edad" => "integer|between:10,100",
+        "DNI" => 'required|string',
+        //
+    ];
+}
+```
+
+Ahora para poder comprobar mas facilmente que insertar registros funciona, se borran todos los registros y se crearan solo 5 cambiando database/seeders/AlumnoSeeder.php
+
+```
+Alumno::factory(5)->create();
+```
+
+Y ejecutamos para que cree los nuevos registros.
+
+```
+php artisan migrate:fresh --seed
+```
+
+![Formulario nuevo alumno rellenado](public/images/registro_1.PNG)
+
+![Alta  nuevo alumno efectiva](public/images/registro_2.PNG)
+
+Para mostrar un mensaje si no se cumple con la validación del campo, debemos poner debajo de cada cuadro de texto la condición para que nos la muestre
+
+```
+@if($errors->get("nombre"))
+    @foreach($errors->get("nombre") as $error)
+        <div class="text-sm text-red-600">
+            $error
+
+        </div>
+    @endforeach
+@endif
+```
+
+Para que los mensajes de error salgan en castellano, hay que instalar el paquete de idiomas desde el terminal.
+
+```
+composer require laravel-lang/Lang
+```
+
+Nos aparecerá la carpeta laravel-lang/Lang, que ahora debemos publicarla para poder utilizarla.
+
+```
+php artisan lang:publish
+```
+
+Ahora nos aparece la carpeta en nuestro proyecto lang, pero solo esta ingles, para poder tener castellano debemos agregarlo desde el terminal.
+
+```
+php artisan lang:add es
+```
+
+Y ya solo queda ir al fichero de configuración .env y cambiar el idioma.
+
+```
+APP_LOCALE=es
+```
+
+Además agregamos value=”{{(old(‘nombre’)}}” para que en caso de error nos mantenga los últimos campos escritos en el formulario y no debamos volver a completarlo.
+
+```
+<x-text-input name="nombre" value="{{ old('nombre') }}" />
+```
+
+Y para que el botón cancelar nos devuelva al listado lo referenciamos.
+
+```
+<a href="{{ route('alumnos.index') }}" class="btn btn-primary mx-2 mt-10">Cancelar</a>
+```
+
+Para que nos muestre un mensaje como que se ha guardado el alumno, en -AlumnoController.php  creamos una variable de sesión.
+
+```
+session->flash("status","Se ha creado el alumno $alumno->nombre");
+```
+Y ahora la referenciamos desde index.blade.php de alumnos debajo del titulo. Para darle formato a la ventana de alert buscamos en daisyui un diseño que nos encaje.
+
+```
+    @if (session()->has("status"))
+        <div role="alert" class="alert alert-success">
+            <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <span>{{ session()->get("status") }}</span>
+        </div>
+    @endif
+```
+
+Como ya podemos crear alumnos, ahora vamos a configurar la edición de uno creado. Primero tenemos que referenciar alumno.edit dentro del botón editar que había personalizado desde daisyui.
+
+```
+<a href="{{route("alumnos.edit", $alumno->id)}}">
+```
+
+Despues creamos dentro de alumno, la vista de edición : edit.blade.php
+Copiamos el formulario de lata de nuevos alumnos y modificamos el route del formulario.
+
+```
+<form method="POST" action="{{ route('alumnos.update', $alumno->id) }}" class="bg-white p-7 rounded-3xl">
+```
+
+Agregamos el método por el cual vamos a actualizar PUT (envia todos los datos) o PATCH (solo los seleccionados.
+
+```
+@method('PUT')
+```
+
+Y decimos a  los campos del formulario que nos muestre el valor actual de la variable $alumno.
+
+```
+<x-text-input name="nombre" value="{{ $alumno->nombre }}" />
+```
+
+Aplicamos la lógica al controlador.
+
+```
+public function update(UpdateAlumnoRequest $request, Alumno $alumno)
+{
+    $datos= $request -> input();
+    $alumno-> update($datos);
+    session()->flash ("status", "Se ha actualizado el alumno $alumno -> id");
+    return redirect() -> route('alumnos.index');
+    //
+}
+```
+
+Ahora debemos permitir el update en request porque si no nos va a decir operación no autorizada
+
+```
+public function authorize(): bool
+{
+    return true;
+}
+```
+
+Y copiamos las validaciones del Store para que tengan que cumplir los mismos requeridos, quitando unique de email, porque sino no nos dejará actualizar.
+
+```
+return [
+    "nombre"=>"string|required|min:5|max:50",
+    "email"=>"string|required",
+    "edad" => "integer|required|between:10,100",
+    "DNI" => 'required|string',
+    //
+];
+```
+
+### -ventana emergente para confirmar guardado
+
+Vamos a instalar sweet alert
+
+```
+npm install sweetalert2
+```
+
+Ahora en edit.blade.php modificamos el botón guardar con el evento onclick de javascript
+
+```
+<button class="btn btn-primary mt-10" type="button" onclick="confirmacionGuardado()>Guardar</button>
+```
+
+Y por ultimo debajo del layout ponemos el código del botón que hemos cogido de sweetalert2
+
+```
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    function confirmacionGuardado() {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: '¡Estás a punto de guardar los cambios!',
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: '¡Sí, guardar!',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('editForm').submit();
+            }
+        });
+    }
+</script>
+```
+
