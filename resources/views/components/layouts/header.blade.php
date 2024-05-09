@@ -14,8 +14,8 @@
 
         @guest
 
-            <a href="/login" class="btn btn-primary">Acceso</a>
-            <a href="/register" class="btn btn-secondary">Registro</a>
+            <a href="/login" class="btn btn-primary mr-2">Acceso</a>
+            <a href="/register" class="btn btn-secondary mr-2">Registro</a>
         @endguest
 
         @auth
