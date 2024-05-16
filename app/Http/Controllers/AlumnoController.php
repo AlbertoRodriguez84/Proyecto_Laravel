@@ -13,11 +13,10 @@ class AlumnoController extends Controller
      */
     public function index()
     {
-        $alumnos = Alumno::all();
-        return view('alumnos.index',compact('alumnos'));
-        //
+        $page = request()->page;
+        $alumnos = Alumno::paginate(8);
+        return view('alumnos.index', compact('alumnos', 'page'));
     }
-
     /**
      * Show the form for creating a new resource.
      */
