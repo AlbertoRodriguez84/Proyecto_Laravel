@@ -1126,6 +1126,35 @@ Y vemos como al intentar entrar a la misma pagina nos pide login.
 
 ![Despues de middleware](public/images/despues_middleware.PNG)
 
+
+
+### Paginacion 
+
+Debemos hacer algunos cambios en nuestro proyecto para que el listado se muestre en distintas paginas en vez en un listado con una barra de desplazamiento.
+
+Primero debemos ir a nuestro archivo y generar otra vez más alumnos para que no nos entren en una pagina.
+
+```
+ Alumno::factory(50)->create();
+ ```
+
+
+Despues debemos cambiar en AlumnoController.php para que en vez de que nos muestre todos los alumnos (all) nos los muestre en paginas (paginate):
+
+$alumnos = Alumno::paginate(8);
+
+Ahora incluimos en la vista los botones de navegación por las distintas páginas. En resources/vioews/alumnos/index.blade.php agramos al final de la tabla los botones para que se vean.
+
+```
+        </table>
+        {{$alumnos->links()}}
+    </div>
+```
+Ya tenemos los botones y podemos navegar por las distintas paginas. Porque el metodo link ya lo tiene todo incluido.
+
+![Paginacion](public/images/paginacion.PNG)
+
+
 Si cerramos el proyecto y queremos vovler a abrirlo debemos ejecutar en el terminal los comando para iniciar el servidor.
 
 ```
