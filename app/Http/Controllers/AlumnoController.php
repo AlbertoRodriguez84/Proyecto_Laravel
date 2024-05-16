@@ -5,25 +5,36 @@ namespace App\Http\Controllers;
 use App\Models\Alumno;
 use App\Http\Requests\StoreAlumnoRequest;
 use App\Http\Requests\UpdateAlumnoRequest;
+use Illuminate\Http\Request;
 
 class AlumnoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $page = request()->page;
-        $alumnos = Alumno::paginate(8);
-        return view('alumnos.index', compact('alumnos', 'page'));
+        $query = $request->input('search');
+
+        if ($query) {
+            $alumnos = Alumno::where('nombre', 'LIKE', '%' . $query . '%')
+                ->orWhere('DNI', 'LIKE', '%' . $query . '%')
+                ->orWhere('email', 'LIKE', '%' . $query . '%')
+                ->paginate(8);
+        } else {
+            $alumnos = Alumno::paginate(8);
+        }
+
+        return view('alumnos.index', compact('alumnos'));
     }
+
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view ("alumnos.create");
-        //
+        return view("alumnos.create");
     }
 
     /**
@@ -51,21 +62,21 @@ class AlumnoController extends Controller
      */
     public function edit(Alumno $alumno)
     {
-        return view ("alumnos.edit", compact("alumno"));
-        //
+        $page = request()->input('page') ?? 1;
+        //dd($page); // Para verificar si el valor de la página es correcto
+        return view("alumnos.edit", compact("alumno", "page"));
     }
-
 
     /**
      * Update the specified resource in storage.
      */
     public function update(UpdateAlumnoRequest $request, Alumno $alumno)
     {
-        $datos= $request -> input();
-        $alumno-> update($datos);
-        session()->flash ("status", "Se ha actualizado el alumno $alumno->id");
-        return redirect() -> route('alumnos.index');
-        //
+        $datos = $request->validated();
+        $alumno->update($datos);
+        session()->flash("status", "Se ha actualizado el alumno $alumno->id");
+        $page = $request->input('page') ?? 1;
+        return redirect()->route('alumnos.index', ['page' => $page]);
     }
 
     /**
@@ -73,9 +84,9 @@ class AlumnoController extends Controller
      */
     public function destroy(Alumno $alumno)
     {
-        session()->flash("status","Se ha borrado el alumno $alumno->nombre");
+        $page = request()->input('page') ?? 1;
+        session()->flash("status", "Se ha borrado el alumno $alumno->nombre");
         $alumno->delete();
-        return redirect() -> route('alumnos.index');
-        //
+        return redirect()->route('alumnos.index', ['page' => $page]);
     }
 }

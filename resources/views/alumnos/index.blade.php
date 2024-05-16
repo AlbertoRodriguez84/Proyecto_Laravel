@@ -10,7 +10,13 @@
             <span>{{ session()->get("status") }}</span>
         </div>
     @endif
-    <a href="{{ route("alumnos.create") }}" class="btn btn-primary mx-10">Nuevo alumno</a>
+    <div class="flex justify-between">
+        <form action="{{ route('alumnos.index') }}" method="GET">
+            <input type="text" name="search" placeholder="Buscar alumno..." class="mx-2">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+        <a href="{{ route("alumnos.create") }}" class="btn btn-primary mx-10">Nuevo alumno</a>
+    </div>
     <div class="overflow-x-auto h-full">
         <table class="table table-xs table-pin-rows table-pin-cols">
             <thead>
@@ -57,6 +63,7 @@
             @endforeach
             </tbody>
         </table>
+
         {{$alumnos->links()}}
     </div>
 </x-layouts.layout>
