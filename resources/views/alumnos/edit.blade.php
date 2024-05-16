@@ -4,6 +4,8 @@
         <form id="editForm" method="POST" action="{{ route('alumnos.update', $alumno->id) }}" class="bg-white p-7 rounded-3xl">
             @method('PUT')
             @csrf
+            <input type="hidden" name="page" value="{{ $page }}" />
+
             <x-input-label for="nombre">Nombre</x-input-label>
             <x-text-input name="nombre" value="{{ $alumno->nombre }}" />
             @if($errors->get("nombre"))
@@ -38,7 +40,7 @@
             @endif
             <br>
             <button class="btn btn-primary mt-10" type="button" onclick="confirmacionGuardado()">Guardar</button>
-            <a href="{{ route('alumnos.index') }}" class="btn btn-primary mx-2 mt-10">Cancelar</a>
+            <a href="{{ route('alumnos.edit', ['alumno' => $alumno->id, 'page' => $page]) }}" class="btn btn-primary mx-2 mt-10">Editar</a>
         </form>
     </div>
 </x-layouts.layout>
