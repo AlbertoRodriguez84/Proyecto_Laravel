@@ -1181,6 +1181,8 @@ Modificamos ligeramente la pagina para que busqueda aparezca a la izquierda y Nu
         <a href="{{ route("alumnos.create") }}" class="btn btn-primary mx-10">Nuevo alumno</a>
     </div>
 ```
+
+
 ![Boton busqueda](public/images/boton_busqueda.PNG)
 
 Despues en AlumnoController.php debemos asignar como se van a realizar la busqueda, por los campos Nombre, DNI y email. Para ello modificamos la funcion index
@@ -1222,15 +1224,13 @@ En la tutoria haceesto para evitar que luego nos den problemas los plurales al c
 ```
 Este cambio nos obliga a hacer cambios  en el modelo User, ya qye al hacer los plurales en castellano esperará que se llame usuarios, si no nos pondra useres. Cambiamos el nombre en models a ser.php por Usuario.php
 
-Yo ese paso no lo he seguido porque luego me da mas errores, dejo la tabla como profesors.
-
-![Error](public/images/error.PNG)
-
-
 Tambien hay que cambiar en database/migrations en la tabla de users hay que sustituirlo por usuarios.
 ```
   Schema::create('usuarios', function (Blueprint $table) 
 ```
+Yo ese paso no lo he seguido porque luego me da mas errores, dejo la tabla como profesors.
+
+![Error](public/images/error.png)
 
 Ahora hay que crear la table en database/migrations donde nos ha creado la de profesor:
 
@@ -1344,11 +1344,11 @@ Una vez hecho esto, debemos hacer la poblacion de las tablas con:
 
 Vemos como ya tenemos los profesores creados en la base de datos.
 
-![Profesores](public/images/profesores.png)
+![Profesores](public/images/profesores.PNG)
 
 Y aqui como se ha asignado un profesor a cada alumno.
 
-![Alumnos con profesor](public/images/alumno-prof-png.PNG)
+![Alumnos con profesor](public/images/alumno-prof.PNG)
 
 
 Si cerramos el proyecto y queremos vovler a abrirlo debemos ejecutar en el terminal los comando para iniciar el servidor.

@@ -3,23 +3,23 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Profesor;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('alumnos', function (Blueprint $table) {
+        Schema::create('profesors', function (Blueprint $table) {
             $table->id();
             $table->string('DNI');
             $table->string('nombre');
             $table->integer('edad');
-            $table->string('email');
-            $table->foreignId('profesor_id')->constrained('profesors')->restrictOnDelete();
+            $table->string("email")->unique;
             $table->timestamps();
         });
+
     }
 
     /**
@@ -27,6 +27,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('alumnos');
+        Schema::dropIfExists('profesors');
     }
 };
