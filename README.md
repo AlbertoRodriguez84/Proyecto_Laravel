@@ -1232,6 +1232,12 @@ Yo ese paso no lo he seguido porque luego me da mas errores, dejo la tabla como 
 
 ![Error](public/images/error.png)
 
+Yo ese paso no lo he seguido porque luego me da mas errores, dejo la tabla como profesors.
+
+Yo ese paso no lo he seguido porque luego me da mas errores, dejo la tabla como profesors.
+
+![Error](public/images/error.PNG)
+
 Ahora hay que crear la table en database/migrations donde nos ha creado la de profesor:
 
 ```
@@ -1349,6 +1355,59 @@ Vemos como ya tenemos los profesores creados en la base de datos.
 Y aqui como se ha asignado un profesor a cada alumno.
 
 ![Alumnos con profesor](public/images/alumno-prof.PNG)
+<<<<<<< HEAD
+
+
+Ahora que ya tenemos los tutores en la base de datos, vamos a integrarlos en la tabla del alumno. Hay que modificar alumnos/index.blade.php y agregar los campos que queremos mostrar, en mi caso nombre y email de los tutores.
+```
+<table class="table table-xs table-pin-rows table-pin-cols">
+            <thead>
+            <tr>
+                <th>DNI</th>
+                <th>Nombre</th>
+                <th>Edad</th>
+                <th>Email</th>
+                <th>Tutor</th>
+                <th>Email Tutor</th>
+                <th>Editar</th>
+                <th>Borrar</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($alumnos as $alumno)
+                <tr>
+                    <td>{{ $alumno->DNI }}</td>
+                    <td>{{ $alumno->nombre }}</td>
+                    <td>{{ $alumno->edad }}</td>
+                    <td>{{ $alumno->email }}</td>
+                    <td>{{ $alumno->profesor->nombre}}</td>
+                    <td>{{ $alumno->profesor->email}}</td>
+                    <td>
+```
+
+![Tabla alumnos con profesor](public/images/alumno-tutor-tabla.PNG)
+
+Para terminar he creado la tabla profesores (siguiendo los mismos pasos que para crear la de alumnos), donde se pueden insertar nuevos profesores y se visualizan los existentes.
+
+![Tabla profesores](public/images/tabla_profesores.PNG)
+
+Y posteriormente he insertado el numero de alumnos que tutoriza cada profesor en una nueva columna. 
+
+Modificando en el controlador del profesor la linea para que cuente los alumnos.
+
+```
+ $profesores = Profesor::withCount('alumnos')->paginate(8);
+ ```
+
+Y aregando la columna Numero de alumnos a la tabla existente.
+
+```
+<td>{{ $profesor->alumnos_count }}</td>
+```
+
+![Tabla profesores con alumnos](public/images/tabla_profesores-alumno.PNG)
+=======
+
 
 
 Si cerramos el proyecto y queremos vovler a abrirlo debemos ejecutar en el terminal los comando para iniciar el servidor.

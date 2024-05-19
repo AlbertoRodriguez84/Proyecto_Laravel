@@ -11,7 +11,11 @@ class StoreProfesorRequest extends FormRequest
      */
     public function authorize(): bool
     {
+<<<<<<< HEAD
+        return true;
+=======
         return false;
+>>>>>>> a0f4dec62b98284b165806f7ac4da911dd88915f
     }
 
     /**
@@ -22,6 +26,13 @@ class StoreProfesorRequest extends FormRequest
     public function rules(): array
     {
         return [
+<<<<<<< HEAD
+            "nombre"=>"string|required|min:5|max:50",
+            "email"=>"string|required|unique:profesors",
+            "edad" => "integer|between:10,100",
+            "DNI" => 'required|string',
+=======
+>>>>>>> a0f4dec62b98284b165806f7ac4da911dd88915f
             //
         ];
     }
