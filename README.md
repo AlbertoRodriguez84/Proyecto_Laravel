@@ -1381,6 +1381,27 @@ Ahora que ya tenemos los tutores en la base de datos, vamos a integrarlos en la 
 
 ![Tabla alumnos con profesor](public/images/alumno-tutor-tabla.PNG)
 
+Para terminar he creado la tabla profesores (siguiendo los mismos pasos que para crear la de alumnos), donde se pueden insertar nuevos profesores y se visualizan los existentes.
+
+![Tabla profesores](public/images/tabla_profesores.PNG)
+
+Y posteriormente he insertado el numero de alumnos que tutoriza cada profesor en una nueva columna. 
+
+Modificando en el controlador del profesor la linea para que cuente los alumnos.
+
+```
+ $profesores = Profesor::withCount('alumnos')->paginate(8);
+ ```
+
+Y aregando la columna Numero de alumnos a la tabla existente.
+
+```
+<td>{{ $profesor->alumnos_count }}</td>
+```
+
+![Tabla profesores con alumnos](public/images/tabla_profesores-alumno.PNG)
+
+
 Si cerramos el proyecto y queremos vovler a abrirlo debemos ejecutar en el terminal los comando para iniciar el servidor.
 
 ```

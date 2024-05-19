@@ -1,7 +1,7 @@
 <x-layouts.layout>
     <h1 class="text-4xl text-red-600 font-bold flex justify-center">Alta nuevos profesores</h1>
     <div class="flex justify-center p-5 bg-gray-200">
-        <form method="POST" action="{{ route('prfesores.store') }}" class="bg-white p-7 rounded-3xl">
+        <form method="POST" action="{{ route('profesores.store') }}" class="bg-white p-7 rounded-3xl">
             @csrf
             <x-input-label for="nombre">Nombre</x-input-label>
             <x-text-input name="nombre" value="{{ old('nombre') }}"/>
