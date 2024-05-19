@@ -1181,6 +1181,8 @@ Modificamos ligeramente la pagina para que busqueda aparezca a la izquierda y Nu
         <a href="{{ route("alumnos.create") }}" class="btn btn-primary mx-10">Nuevo alumno</a>
     </div>
 ```
+
+
 ![Boton busqueda](public/images/boton_busqueda.PNG)
 
 Despues en AlumnoController.php debemos asignar como se van a realizar la busqueda, por los campos Nombre, DNI y email. Para ello modificamos la funcion index
@@ -1226,6 +1228,9 @@ Tambien hay que cambiar en database/migrations en la tabla de users hay que sust
 ```
   Schema::create('usuarios', function (Blueprint $table) 
 ```
+Yo ese paso no lo he seguido porque luego me da mas errores, dejo la tabla como profesors.
+
+![Error](public/images/error.png)
 
 Yo ese paso no lo he seguido porque luego me da mas errores, dejo la tabla como profesors.
 
@@ -1350,6 +1355,7 @@ Vemos como ya tenemos los profesores creados en la base de datos.
 Y aqui como se ha asignado un profesor a cada alumno.
 
 ![Alumnos con profesor](public/images/alumno-prof.PNG)
+<<<<<<< HEAD
 
 
 Ahora que ya tenemos los tutores en la base de datos, vamos a integrarlos en la tabla del alumno. Hay que modificar alumnos/index.blade.php y agregar los campos que queremos mostrar, en mi caso nombre y email de los tutores.
@@ -1400,6 +1406,8 @@ Y aregando la columna Numero de alumnos a la tabla existente.
 ```
 
 ![Tabla profesores con alumnos](public/images/tabla_profesores-alumno.PNG)
+=======
+>>>>>>> a0f4dec62b98284b165806f7ac4da911dd88915f
 
 
 Si cerramos el proyecto y queremos vovler a abrirlo debemos ejecutar en el terminal los comando para iniciar el servidor.

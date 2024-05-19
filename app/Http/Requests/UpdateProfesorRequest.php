@@ -11,7 +11,11 @@ class UpdateProfesorRequest extends FormRequest
      */
     public function authorize(): bool
     {
+<<<<<<< HEAD
         return true;
+=======
+        return false;
+>>>>>>> a0f4dec62b98284b165806f7ac4da911dd88915f
     }
 
     /**

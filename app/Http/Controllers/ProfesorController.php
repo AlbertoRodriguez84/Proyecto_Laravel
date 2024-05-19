@@ -5,12 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Profesor;
 use App\Http\Requests\StoreProfesorRequest;
 use App\Http\Requests\UpdateProfesorRequest;
+<<<<<<< HEAD
 use Illuminate\Http\Request;
+=======
+
+>>>>>>> a0f4dec62b98284b165806f7ac4da911dd88915f
 class ProfesorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+<<<<<<< HEAD
     public function index(Request $request)
     {
         $query = $request->input('search');
@@ -26,6 +31,11 @@ class ProfesorController extends Controller
         }
 
         return view('profesores.index', compact('profesores'));
+=======
+    public function index()
+    {
+        //
+>>>>>>> a0f4dec62b98284b165806f7ac4da911dd88915f
     }
 
     /**
@@ -33,7 +43,11 @@ class ProfesorController extends Controller
      */
     public function create()
     {
+<<<<<<< HEAD
         return view("profesores.create");
+=======
+        //
+>>>>>>> a0f4dec62b98284b165806f7ac4da911dd88915f
     }
 
     /**
@@ -41,11 +55,15 @@ class ProfesorController extends Controller
      */
     public function store(StoreProfesorRequest $request)
     {
+<<<<<<< HEAD
         $datos = $request->validated();
         $profesor = new Profesor($datos);
         $profesor->save();
         session()->flash("status", "Se ha creado el profesor $profesor->nombre");
         return redirect()->route('profesores.index');
+=======
+        //
+>>>>>>> a0f4dec62b98284b165806f7ac4da911dd88915f
     }
 
     /**
@@ -61,6 +79,10 @@ class ProfesorController extends Controller
      */
     public function edit(Profesor $profesor)
     {
+<<<<<<< HEAD
+=======
+        //
+>>>>>>> a0f4dec62b98284b165806f7ac4da911dd88915f
     }
 
     /**
@@ -68,7 +90,11 @@ class ProfesorController extends Controller
      */
     public function update(UpdateProfesorRequest $request, Profesor $profesor)
     {
+<<<<<<< HEAD
 
+=======
+        //
+>>>>>>> a0f4dec62b98284b165806f7ac4da911dd88915f
     }
 
     /**
@@ -76,6 +102,10 @@ class ProfesorController extends Controller
      */
     public function destroy(Profesor $profesor)
     {
+<<<<<<< HEAD
 
+=======
+        //
+>>>>>>> a0f4dec62b98284b165806f7ac4da911dd88915f
     }
 }
