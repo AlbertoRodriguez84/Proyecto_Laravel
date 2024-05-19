@@ -1352,6 +1352,35 @@ Y aqui como se ha asignado un profesor a cada alumno.
 ![Alumnos con profesor](public/images/alumno-prof.PNG)
 
 
+Ahora que ya tenemos los tutores en la base de datos, vamos a integrarlos en la tabla del alumno. Hay que modificar alumnos/index.blade.php y agregar los campos que queremos mostrar, en mi caso nombre y email de los tutores.
+```
+<table class="table table-xs table-pin-rows table-pin-cols">
+            <thead>
+            <tr>
+                <th>DNI</th>
+                <th>Nombre</th>
+                <th>Edad</th>
+                <th>Email</th>
+                <th>Tutor</th>
+                <th>Email Tutor</th>
+                <th>Editar</th>
+                <th>Borrar</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($alumnos as $alumno)
+                <tr>
+                    <td>{{ $alumno->DNI }}</td>
+                    <td>{{ $alumno->nombre }}</td>
+                    <td>{{ $alumno->edad }}</td>
+                    <td>{{ $alumno->email }}</td>
+                    <td>{{ $alumno->profesor->nombre}}</td>
+                    <td>{{ $alumno->profesor->email}}</td>
+                    <td>
+```
+
+![Tabla alumnos con profesor](public/images/alumno-tutor-tabla.PNG)
+
 Si cerramos el proyecto y queremos vovler a abrirlo debemos ejecutar en el terminal los comando para iniciar el servidor.
 
 ```
