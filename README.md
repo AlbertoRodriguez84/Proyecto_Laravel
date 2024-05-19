@@ -1407,7 +1407,7 @@ Y aregando la columna Numero de alumnos a la tabla existente.
 
 ![Tabla profesores con alumnos](public/images/tabla_profesores-alumno.PNG)
 =======
->>>>>>> a0f4dec62b98284b165806f7ac4da911dd88915f
+
 
 
 Si cerramos el proyecto y queremos vovler a abrirlo debemos ejecutar en el terminal los comando para iniciar el servidor.
