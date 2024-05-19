@@ -1230,12 +1230,6 @@ Tambien hay que cambiar en database/migrations en la tabla de users hay que sust
 ```
 Yo ese paso no lo he seguido porque luego me da mas errores, dejo la tabla como profesors.
 
-![Error](public/images/error.png)
-
-Yo ese paso no lo he seguido porque luego me da mas errores, dejo la tabla como profesors.
-
-Yo ese paso no lo he seguido porque luego me da mas errores, dejo la tabla como profesors.
-
 ![Error](public/images/error.PNG)
 
 Ahora hay que crear la table en database/migrations donde nos ha creado la de profesor:
@@ -1355,7 +1349,7 @@ Vemos como ya tenemos los profesores creados en la base de datos.
 Y aqui como se ha asignado un profesor a cada alumno.
 
 ![Alumnos con profesor](public/images/alumno-prof.PNG)
-<<<<<<< HEAD
+
 
 
 Ahora que ya tenemos los tutores en la base de datos, vamos a integrarlos en la tabla del alumno. Hay que modificar alumnos/index.blade.php y agregar los campos que queremos mostrar, en mi caso nombre y email de los tutores.
@@ -1393,13 +1387,13 @@ Para terminar he creado la tabla profesores (siguiendo los mismos pasos que para
 
 Y posteriormente he insertado el numero de alumnos que tutoriza cada profesor en una nueva columna. 
 
-Modificando en el controlador del profesor la linea para que cuente los alumnos.
+Modificando en el controlador de profesor la linea para que cuente los alumnos.
 
 ```
  $profesores = Profesor::withCount('alumnos')->paginate(8);
  ```
 
-Y aregando la columna Numero de alumnos a la tabla existente.
+Y agregando la columna Numero de alumnos a la tabla existente.
 
 ```
 <td>{{ $profesor->alumnos_count }}</td>
