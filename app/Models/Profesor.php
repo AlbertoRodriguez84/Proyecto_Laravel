@@ -14,3 +14,4 @@ class Profesor extends Model
         return $this->hasMany(Alumno::class);
     }
 }
+
