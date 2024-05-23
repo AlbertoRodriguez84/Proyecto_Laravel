@@ -1420,3 +1420,25 @@ Y permitir que cargue los estilos con
 ```
 npm run dev
 ```
+
+
+Como me ha indicado el profesor que algunos de los archivos faltan (tuve un problema con git), he localizado a partir de que commit estan mal.
+
+Para solucionarlo he restaurado hasta ese punto git.
+
+Para ellos primero vemos el hash del commit al que queremos volver
+```
+git log --oneline
+```
+En mi caso el commit es: e4932a8
+
+Despues ejecutamos el comando que resetea
+```
+git reset --hard e4932a8
+```
+
+Y para actualizar el repositorio :
+```
+git push origin develop --force
+```
+
