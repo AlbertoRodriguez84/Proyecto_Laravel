@@ -24,7 +24,6 @@ class ProfesorFactory extends Factory
         ];
     }
 
-
     private function get_dni(): string
     {
         $number = $this->faker->numberBetween(10000000, 99999999);

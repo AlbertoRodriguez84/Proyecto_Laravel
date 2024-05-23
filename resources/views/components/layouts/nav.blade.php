@@ -3,6 +3,7 @@
     <a href="{{ route('dwes') }}" class="btn btn-success">DWEC</a>
     @auth
         <a href="{{route("alumnos.index")}}" class=" btn btn-secondary" href="">Alumnos</a>
+        <a href="{{route("profesores.index")}}" class=" btn btn-warning" href="">Profesores</a>
     @endauth
 </nav>
 
