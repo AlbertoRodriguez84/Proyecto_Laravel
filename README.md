@@ -1181,6 +1181,8 @@ Modificamos ligeramente la pagina para que busqueda aparezca a la izquierda y Nu
         <a href="{{ route("alumnos.create") }}" class="btn btn-primary mx-10">Nuevo alumno</a>
     </div>
 ```
+
+
 ![Boton busqueda](public/images/boton_busqueda.PNG)
 
 Despues en AlumnoController.php debemos asignar como se van a realizar la busqueda, por los campos Nombre, DNI y email. Para ello modificamos la funcion index
@@ -1226,9 +1228,6 @@ Tambien hay que cambiar en database/migrations en la tabla de users hay que sust
 ```
   Schema::create('usuarios', function (Blueprint $table) 
 ```
-
-Yo ese paso no lo he seguido porque luego me da mas errores, dejo la tabla como profesors.
-
 Yo ese paso no lo he seguido porque luego me da mas errores, dejo la tabla como profesors.
 
 ![Error](public/images/error.PNG)
@@ -1352,6 +1351,7 @@ Y aqui como se ha asignado un profesor a cada alumno.
 ![Alumnos con profesor](public/images/alumno-prof.PNG)
 
 
+
 Ahora que ya tenemos los tutores en la base de datos, vamos a integrarlos en la tabla del alumno. Hay que modificar alumnos/index.blade.php y agregar los campos que queremos mostrar, en mi caso nombre y email de los tutores.
 ```
 <table class="table table-xs table-pin-rows table-pin-cols">
@@ -1381,6 +1381,29 @@ Ahora que ya tenemos los tutores en la base de datos, vamos a integrarlos en la 
 
 ![Tabla alumnos con profesor](public/images/alumno-tutor-tabla.PNG)
 
+Para terminar he creado la tabla profesores (siguiendo los mismos pasos que para crear la de alumnos), donde se pueden insertar nuevos profesores y se visualizan los existentes.
+
+![Tabla profesores](public/images/tabla_profesores.PNG)
+
+Y posteriormente he insertado el numero de alumnos que tutoriza cada profesor en una nueva columna. 
+
+Modificando en el controlador de profesor la linea para que cuente los alumnos.
+
+```
+ $profesores = Profesor::withCount('alumnos')->paginate(8);
+ ```
+
+Y agregando la columna Numero de alumnos a la tabla existente.
+
+```
+<td>{{ $profesor->alumnos_count }}</td>
+```
+
+![Tabla profesores con alumnos](public/images/tabla_profesores-alumno.PNG)
+=======
+
+
+
 Si cerramos el proyecto y queremos vovler a abrirlo debemos ejecutar en el terminal los comando para iniciar el servidor.
 
 ```
@@ -1397,6 +1420,7 @@ Y permitir que cargue los estilos con
 ```
 npm run dev
 ```
+
 
 Como me ha indicado el profesor que algunos de los archivos faltan (tuve un problema con git), he localizado a partir de que commit estan mal.
 
@@ -1417,3 +1441,4 @@ Y para actualizar el repositorio :
 ```
 git push origin develop --force
 ```
+

@@ -12,6 +12,7 @@ class StoreProfesorRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+
     }
 
     /**
@@ -22,10 +23,12 @@ class StoreProfesorRequest extends FormRequest
     public function rules(): array
     {
         return [
+
             "nombre"=>"string|required|min:5|max:50",
             "email"=>"string|required|unique:profesors",
             "edad" => "integer|between:10,100",
             "DNI" => 'required|string',
+
             //
         ];
     }

@@ -6,11 +6,13 @@ use App\Models\Profesor;
 use App\Http\Requests\StoreProfesorRequest;
 use App\Http\Requests\UpdateProfesorRequest;
 use Illuminate\Http\Request;
+
 class ProfesorController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
     {
         $query = $request->input('search');
@@ -26,6 +28,27 @@ class ProfesorController extends Controller
         }
 
         return view('profesores.index', compact('profesores'));
+
+    public function index(Request $request)
+    {
+        $query = $request->input('search');
+
+        if ($query) {
+            $profesores = Profesor::where('nombre', 'LIKE', '%' . $query . '%')
+                ->orWhere('DNI', 'LIKE', '%' . $query . '%')
+                ->orWhere('email', 'LIKE', '%' . $query . '%')
+                ->withCount('alumnos')
+                ->paginate(8);
+        } else {
+            $profesores = Profesor::withCount('alumnos')->paginate(8);
+        }
+
+        return view('profesores.index', compact('profesores'));
+
+    public function index()
+    {
+        //
+
     }
 
     /**
@@ -33,7 +56,12 @@ class ProfesorController extends Controller
      */
     public function create()
     {
+
         return view("profesores.create");
+
+        return view("profesores.create");
+
+
     }
 
     /**
@@ -41,11 +69,13 @@ class ProfesorController extends Controller
      */
     public function store(StoreProfesorRequest $request)
     {
+
         $datos = $request->validated();
         $profesor = new Profesor($datos);
         $profesor->save();
         session()->flash("status", "Se ha creado el profesor $profesor->nombre");
         return redirect()->route('profesores.index');
+
     }
 
     /**
@@ -61,6 +91,7 @@ class ProfesorController extends Controller
      */
     public function edit(Profesor $profesor)
     {
+
     }
 
     /**
