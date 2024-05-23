@@ -38,6 +38,9 @@
                     </div>
                 @endforeach
             @endif
+            <h1>Datos del tutor</h1>
+            {{$alumno->profesor->nombre}}<br/>
+            {{$alumno->profesor->email}}<br/>
             <br>
             <button class="btn btn-primary mt-10" type="button" onclick="confirmacionGuardado()">Guardar</button>
             <a href="{{ route('alumnos.edit', ['alumno' => $alumno->id, 'page' => $page]) }}" class="btn btn-primary mx-2 mt-10">Editar</a>
